@@ -1,0 +1,25 @@
+name: chittisat_android
+description: Android reconstruction of the ChittiSat Flutter dashboard.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  usb_serial: ^0.5.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/temperature.png
+    - assets/icons/pressure.png
+    - assets/icons/usb.png
+    - assets/icons/weather/partly_cloud.png
+    - assets/icons/weather/sunny.png
+    - assets/icons/weather/rainy.png
+    - assets/models/satellite.obj
+    - assets/models/satellite.mtl

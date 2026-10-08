@@ -1,0 +1,14 @@
+ChittiSat reverse-engineering notes
+================================
+- Windows executable: Flutter desktop app.
+- Flutter engine: flutter_windows.dll
+- Compiled Dart: data/app.so
+- Serial dependencies: flutter_libserialport_plugin.dll + serialport.dll
+- Network strings found: https://api.open-meteo.com/v1/forecast and http://ip-api.com/json
+- Dart model/class strings include SatelliteData, MovementData, WeatherData, PollutionData,
+  SerialPortSatelliteDataRepo, SerialPortReader, SerialPortConfig, DashboardPage,
+  WeatherPanel, MovementPanel, PollutionPanel, SatelliteWidget.
+- Original bundled satellite assets: assets/models/satellite.obj/.mtl
+- Original weather assets included.
+- Screenshot confirms a dark landscape dashboard with Weather, Movement, Air Quality,
+  altitude gauge, serial device status, port selector, and data status.
