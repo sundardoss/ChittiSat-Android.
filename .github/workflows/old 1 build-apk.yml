@@ -51,27 +51,6 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Patch legacy usb_serial Android Gradle script
-        shell: bash
-        run: |
-          python3 - <<'PYFIX'
-          from pathlib import Path
-          import re
-          candidates = list(Path.home().glob('.pub-cache/hosted/pub.dev/usb_serial-*/android/build.gradle'))
-          if not candidates:
-              candidates = list(Path.home().glob('.pub-cache/hosted/pub.dartlang.org/usb_serial-*/android/build.gradle'))
-          if not candidates:
-              raise SystemExit('usb_serial Android build.gradle not found in pub cache')
-          p = candidates[0]
-          s = p.read_text()
-          s = re.sub(r'\bjcenter\s*\(\s*\)', 'mavenCentral()', s)
-          # The legacy package may apply Kotlin before the Android library plugin.
-          s = s.replace("apply plugin: 'kotlin-android'\napply plugin: 'com.android.library'", "apply plugin: 'com.android.library'\napply plugin: 'kotlin-android'")
-          s = s.replace('apply plugin: "kotlin-android"\napply plugin: "com.android.library"', 'apply plugin: "com.android.library"\napply plugin: "kotlin-android"')
-          p.write_text(s)
-          print(f'Patched legacy Gradle declarations in {p}')
-          PYFIX
-
       - name: Build release APK
         run: flutter build apk --release
 
