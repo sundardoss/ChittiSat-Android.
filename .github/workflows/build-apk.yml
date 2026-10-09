@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -27,6 +27,23 @@ jobs:
         with:
           channel: stable
           cache: true
+
+      - name: Generate complete Android project scaffold
+        shell: bash
+        run: |
+          rm -rf android
+          flutter create --platforms=android --org com.chittisat --project-name chittisat .
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('android/app/src/main/AndroidManifest.xml')
+          s = p.read_text()
+          s = s.replace('<manifest xmlns:android="http://schemas.android.com/apk/res/android">', '<manifest xmlns:android="http://schemas.android.com/apk/res/android">\n    <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-feature android:name="android.hardware.usb.host" android:required="false"/>')
+          s = s.replace('android:label="chittisat"', 'android:label="ChittiSat"')
+          s = s.replace('<application', '<application android:usesCleartextTraffic="true"', 1)
+          s = s.replace('android:name=".MainActivity"', 'android:name=".MainActivity"\n            android:screenOrientation="landscape"')
+          p.write_text(s)
+          print('Generated Android scaffold and configured ChittiSat manifest.')
+          PY
 
       - name: Flutter doctor
         run: flutter doctor -v
