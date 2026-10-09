@@ -52,6 +52,11 @@ jobs:
         run: flutter pub get
 
       - name: Patch legacy usb_serial Android Gradle script
+      - name: Regenerate Android project files
+        run: flutter create --platforms=android .
+
+      - name: Build release APK
+        run: flutter build apk --release
         shell: bash
         run: |
           python3 - <<'PYFIX'
